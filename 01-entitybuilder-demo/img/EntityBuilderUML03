@@ -1,0 +1,26 @@
+@startuml
+scale 1.2
+
+class Order
+class BaseOrderRelatedObjCmd
+abstract class BaseOrderSaveCmd
+class DefaultOrderSaveCmd
+class Scenario1OrderSaveCmd
+class Scenario2OrderSaveCmd
+abstract class BaseOrderDeleteCmd
+class DefaultOrderDeleteCmd
+class Scenario1OrderDeleteCmd
+class Scenario2OrderDeleteCmd
+
+BaseOrderRelatedObjCmd -up-|> Order
+BaseOrderSaveCmd -up-|> BaseOrderRelatedObjCmd
+Scenario2OrderSaveCmd -up-|> BaseOrderSaveCmd
+Scenario1OrderSaveCmd -up-|> BaseOrderSaveCmd
+DefaultOrderSaveCmd -up-|> BaseOrderSaveCmd
+BaseOrderDeleteCmd -up-|> BaseOrderRelatedObjCmd
+DefaultOrderDeleteCmd -up-|> BaseOrderDeleteCmd
+Scenario1OrderDeleteCmd -up-|> BaseOrderDeleteCmd
+Scenario2OrderDeleteCmd -up-|> BaseOrderDeleteCmd
+
+right footer <font size="15" color="red">ZhangZiSheng001</font>
+@enduml

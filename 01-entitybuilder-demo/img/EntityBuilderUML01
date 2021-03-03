@@ -1,0 +1,33 @@
+@startuml
+scale 1.2
+
+interface EntityBuilder {
+    + T getBaseData()
+    + void setBaseData(T baseData)
+    + boolean validate()
+    + R build()
+}
+
+
+abstract class AbstractEntityBuilder<T, R> {
+    - T baseData
+    ..<color:green>实现EntityBuilder的方法</color>..
+    + T getBaseData()
+    + void setBaseData(T baseData)
+    + boolean validate()
+    + R build()
+    ..<color:green>子类需实现的方法</color>..
+    # abstract void doInit();
+    # abstract boolean doValidate();
+    # abstract R getSourceEntity();
+    # abstract R doBuild(R entity);
+}
+
+AbstractEntityBuilder .up.|> EntityBuilder
+
+class OrderSaveEntityBuilder
+OrderSaveEntityBuilder -up-|> AbstractEntityBuilder
+OrderDeleteEntityBuilder -up-|> AbstractEntityBuilder
+
+right footer <font size="15" color="red">ZhangZiSheng001</font>
+@enduml

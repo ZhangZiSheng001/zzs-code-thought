@@ -1,0 +1,67 @@
+@startuml
+scale 1.2
+
+interface EntityBuilder {
+    + T getBaseData()
+    + void setBaseData(T baseData)
+    + boolean validate()
+    + R build()
+}
+
+
+abstract class AbstractEntityBuilder<T, R> {
+    - T baseData
+    ..<color:green>实现EntityBuilder的方法</color>..
+    + T getBaseData()
+    + void setBaseData(T baseData)
+    + boolean validate()
+    + R build()
+    ..<color:green>子类需实现的方法</color>..
+    # abstract void doInit()
+    # abstract boolean doValidate()
+    # abstract R getSourceEntity()
+    # abstract R doBuild(R entity)
+}
+
+abstract class AbstractFlexibleEntityBuilder<T, R> {
+    - EntityBuilderPostProcessRegistry<T, R> postProcessRegistry
+    - ValidatorRegistry<T> validatorRegistry
+    + void registerEntityBuilderPostProcessor(EntityBuilderPostProcessor<T, R> postProcessor)
+    + void registerValidator(Validator<T> validator)
+    ..<color:green>实现AbstractEntityBuilder的方法</color>..
+    # void doInit()
+    # boolean doValidate()
+    # R getSourceEntity()
+    # R doBuild(R entity)
+    ..<color:green>子类需实现的方法</color>..
+    # abstract void defaultInit()
+    # abstract boolean defaultValidate()
+    # abstract void defaultBuild(R entity)
+    # abstract void finalExtend(R entity)
+}
+class EntityBuilderPostProcessRegistry<T, R>
+interface EntityBuilderPostProcessor<T, R> {
+    + void postAfterInit(T baseData)
+    + void postProcessBeforeBuild(R entity, T baseData)
+    + void postProcessAfterBuild(R entity, T baseData)
+}
+
+class ValidatorRegistry<T>
+interface Validator<T> {
+    + boolean validate(T baseData)
+}
+
+
+AbstractEntityBuilder .up.|> EntityBuilder
+AbstractFlexibleEntityBuilder -up-|> AbstractEntityBuilder
+
+OrderSaveEntityBuilder -up-|> AbstractFlexibleEntityBuilder
+OrderDeleteEntityBuilder -up-|> AbstractFlexibleEntityBuilder
+
+EntityBuilderPostProcessor "n" -down-o "1" EntityBuilderPostProcessRegistry
+Validator "n" -down-o "1" ValidatorRegistry
+
+EntityBuilderPostProcessRegistry -left-o AbstractFlexibleEntityBuilder
+ValidatorRegistry -right-o AbstractFlexibleEntityBuilder
+right footer <font size="15" color="red">ZhangZiSheng001</font>
+@enduml
