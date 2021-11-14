@@ -1,0 +1,45 @@
+# 一个校验接口
+
+最近，我需要对接一个外部接口，基本功能是：校验指定的门店是否完善了货运信息。接口大致是这样的：
+
+```shell
+POST https://******/Dealer/CheckCarrier
+Heads:Authorization=****,Content-Type=application/x-www-form-urlencoded
+Request Body:DealerCode=**,StoreCode=**,BrandCode=**,BuCode=**
+Response Body:
+{"success":true,"message":"操作成功","data":"OK"}
+```
+
+这种 Response 的结构相信大家并不陌生吧。
+
+# 第一个问题
+
+拿到这个接口时，我觉得有点奇怪。**既然是校验接口，结果应该是 true 或 false 啊，怎么给了个字符串“OK”呢？**于是，带着疑问，我找到了提供接口的同行 A。
+
+![interface_design_004](https://img2020.cnblogs.com/blog/1731892/202111/1731892-20211114170655423-12328612.png)
+
+同行 A 回复说，**不用管 data，校验的结果放在 success 里？**这时，我头上多了更多的问号，感觉哪里怪怪的，又一时说不出个所以然。
+
+# 第二个问题
+
+思考片刻，我才意识到这种疑惑的根源--同行 A 对 Response 的理解和我不一样。在我看来，不管什么接口，**data 放的都是最终结果，而 success 放的是是否正常地完成了调用**。就拿这个接口来说，指定的门店不管有没有完善货运信息，success 都应该为 true，那什么时候为 false 呢？当某些原因导致校验无法正常得到结果时，返回 false，例如，入参非法、门店未维护。
+
+难道一直以来我都是错的吗？
+
+我试着和同行 A 交流这个问题，发了一堆废话后，同行 A 好像没有理解我的疑惑。
+
+![interface_design_002](https://img2020.cnblogs.com/blog/1731892/202111/1731892-20211114170713697-41381791.png)
+
+可能是我没表达清楚吧，我试着用比喻的方式来说明：**我想看看楼上有没有肉？data 里放的就是最终结果，即有没有肉，而 success 为 true 时，说明我顺利地爬上了漏，并确认了有没有肉，为 false 时，可能是我爬楼梯摔了一跤，没法确认有没有肉**。
+
+![interface_design_003](https://img2020.cnblogs.com/blog/1731892/202111/1731892-20211114170729372-519390913.png)
+
+最后，同行 A 好像认可了我的这套逻辑，当然，人家可能是觉得我太烦了，不想与我多费口舌。
+
+# 结语
+
+所以，我想知道，大家是怎么理解 Response 的。
+
+最后，感谢阅读，欢迎私信交流。
+
+本文为原创文章，转载请附上原文出处链接：https://www.cnblogs.com/ZhangZiSheng001/p/15552479.html
