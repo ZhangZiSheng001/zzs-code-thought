@@ -97,7 +97,7 @@ insert  into `demo_user`(`id`,`name`,`gender`,`age`,`gmt_create`,`gmt_modified`,
 
 第二种方案，**将事务隔离级别更改为可重复读（repeatable read）**。第一种方案中，读写是串行的，然而，我们既要读写并行，又不想出现不可重复读。于是，就有了第二种方案。如下：
 
-![mysql_lock_07.png](https://img2020.cnblogs.com/blog/1731892/202112/1731892-20211224133620014-140792221.png)
+![mysql_lock_07.png](https://img2020.cnblogs.com/blog/1731892/202112/1731892-20211224165728234-546157055.png)
 
 可以看到，会话 1 的读操作并没有加锁，会话 2 的写操作也不需要等待，最终却没有产生不可重复读。如何实现的呢？
 
