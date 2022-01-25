@@ -55,9 +55,6 @@ abstract public class AbstractClassGenerator<T> implements ClassGenerator {
          * }
          * zzs001
          * </pre></blockquote>
-         * @author zzs
-         * @date 2022年1月24日 上午9:51:41
-         * @param args void
          */
         Map cache = new WeakHashMap();
         public Source(String name) {
